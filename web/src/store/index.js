@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import fetchCsvFiles from '@/api';
+import { fetchCsvFiles } from '@/api';
 
 Vue.use(Vuex);
 
@@ -22,5 +22,8 @@ export default new Vuex.Store({
     },
   },
   modules: {
+  },
+  getters: {
+    getCsvFileById: (state) => (id) => state.csvFiles.find((csvFile) => csvFile.id === id),
   },
 });

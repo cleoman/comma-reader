@@ -31,20 +31,32 @@ def get_date_stats(json_content):
 
 bp = Blueprint('csvfiles', __name__)
 
-@bp.route('/csvfiles', methods=('GET', 'POST'))
+@bp.route('/csvfiles', methods=('GET', 'POST', 'DELETE'))
 def csvfiles():
   db = get_db()
-
+  # return all csv_files
   if request.method == 'GET':
     csvfiles = query_db("SELECT * FROM csv_files")
     return jsonify(csvfiles)
 
+  # create new csv file
   if request.method == 'POST':
     request_json = request.json
     name = request_json['name']
     raw_content = request_json['raw_content']
+    # would probably be better to just parse into date stats and store those,
+    # but here we are
     parsed_content = get_parsed_json_from_csv_string(raw_content)
     db.execute('INSERT INTO csv_files (name, raw_content, parsed_content) VALUES (?, ?, ?)', (name, raw_content, parsed_content))
+    db.commit()
+    return jsonify({'status':'success'})
+
+  # delete csv file
+  if request.method == 'DELETE':
+    request_json = request.json
+    #TODO: unsafe parse here
+    id_to_delete = int(request_json['id'])
+    db.execute('DELETE FROM csv_files WHERE id = ?', (id_to_delete,))
     db.commit()
     return jsonify({'status':'success'})
 

@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
+import CsvFile from '../views/CsvFile.vue';
+import Stats from '../views/Stats.vue';
 
 Vue.use(VueRouter);
 
@@ -10,7 +12,16 @@ const routes = [
     name: 'Home',
     component: Home,
   },
-
+  {
+    path: '/csvfile/:id',
+    name: 'CsvFile',
+    component: CsvFile,
+  },
+  {
+    path: '/csvfile/:id/stats',
+    name: 'Stats',
+    component: Stats,
+  },
 ];
 
 const router = new VueRouter({
