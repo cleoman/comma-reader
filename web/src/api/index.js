@@ -7,5 +7,13 @@ export function fetchCsvFiles() {
 }
 
 export function getCsvFileStats(id) {
-  return axios.get(`${API_URL}/csvfiles/${id}/stats`);
+  return axios.get(`${API_URL}/csvfiles/stats/${id}`);
+}
+
+export function postNewCsvFile(file) {
+  console.log(file);
+  return axios.post(`${API_URL}/csvfiles`, {
+    name: file.name,
+    raw_content: file.content,
+  });
 }

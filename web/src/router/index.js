@@ -18,7 +18,7 @@ const routes = [
     component: CsvFile,
   },
   {
-    path: '/csvfile/:id/stats',
+    path: '/csvfile/stats/:id',
     name: 'Stats',
     component: Stats,
   },

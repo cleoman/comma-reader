@@ -1,18 +1,11 @@
 <template>
   <div>
     {{matchingFile.name}}
-    <table>
-      <thead>
-        <th v-for="header in headers" :key="header">
-          {{header}}
-        </th>
-      </thead>
-    </table>
+    <v-data-table :headers="headers" :items="csvFileContent"></v-data-table>
   </div>
 </template>
 
 <script>
-// import { mapState } from 'vuex';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -26,13 +19,16 @@ export default {
     matchingFile() {
       return this.getCsvFileById(parseInt(this.$route.params.id, 10));
     },
+    csvFileContent() {
+      return JSON.parse(this.matchingFile.parsed_content);
+    },
     headers() {
       if (this.matchingFile.parsed_content === null) {
         return ['No valid headers detected'];
       }
       const csvContent = JSON.parse(this.matchingFile.parsed_content);
       const headers = Object.keys(csvContent[0]);
-      return headers;
+      return headers.map((item) => ({ text: item, value: item }));
     },
   },
   beforeMount() {

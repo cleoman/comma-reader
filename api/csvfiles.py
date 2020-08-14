@@ -1,7 +1,8 @@
 import csv
 import json
 
-from flask import Blueprint, g, jsonify, request
+from io import BytesIO
+from flask import Blueprint, g, jsonify, request, send_file
 from dateutil.parser import parse
 from datetime import *
 
@@ -16,7 +17,7 @@ def get_parsed_json_from_csv_string(csv_string):
   return json.dumps(data)
 
 def get_date_stats(json_content):
-  # pretty slow on example.csv, should do this async
+  # very slow on example.csv, should do this async and preferably only once
   dict_of_years_to_count = {}
   unparsed_csv_rows = json_content[0]['parsed_content']
   csv_rows = json.loads(unparsed_csv_rows)
@@ -42,6 +43,7 @@ def csvfiles():
   # create new csv file
   if request.method == 'POST':
     request_json = request.json
+    print(request_json)
     name = request_json['name']
     raw_content = request_json['raw_content']
     # would probably be better to just parse into date stats and store those,
@@ -61,10 +63,23 @@ def csvfiles():
     return jsonify({'status':'success'})
 
 @bp.route('/csvfiles/stats/<int:id>')
-def csvfilestats(id=None):
+def csvfile_stats(id=None):
   if id is None:
     return jsonify({'status':'error'})
 
   csv_file = query_db('SELECT parsed_content FROM csv_files WHERE ID = ?', [id], one=True)
   date_stats = get_date_stats(csv_file)
   return jsonify({'status':'success', 'dates': date_stats})
+
+@bp.route('/csvfiles/download/<int:id>')
+def csvfile_download(id=None):
+  if id is None:
+    return jsonify({'status':'error'})
+
+  json_content = query_db('SELECT raw_content, name FROM csv_files WHERE ID = ?', [id], one=True)
+  unparsed_csv = json_content[0]['raw_content']
+  file_name = json_content[0]['name']
+  buffer = BytesIO()
+  buffer.write(str.encode(unparsed_csv))
+  buffer.seek(0)
+  return send_file(buffer, as_attachment=True, attachment_filename=file_name, mimetype='text/csv')
