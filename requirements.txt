@@ -1,5 +1,5 @@
 aniso8601==8.0.0
--e git+https://github.com/cleoman/comma-reader.git@9f1be13e628917f2875e13459227660ab91aab9a#egg=api
+-e git+https://github.com/cleoman/comma-reader.git@4c80b0c7c5c3a6e7fba22eae41655551b2f5e1fd#egg=api
 attrs==19.3.0
 click==7.1.2
 Flask==1.1.2
