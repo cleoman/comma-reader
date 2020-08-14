@@ -2,34 +2,34 @@
 ## Installation for backend (linux)
 1. Have Python 3.5+ with pip installed.
 2. Recommend making a virtualenv:
-  * `$ python3 -m venv venv`
-  * `$ . venv/bin/activate`
+    * `$ python3 -m venv venv`
+    * `$ . venv/bin/activate`
 3. In project root: 
-  a. `$ pip install -r requirements.txt`
-  b. I don't think you need to, but you may need to run `$ pip install -e .`
-  c. `$ export FLASK_APP=api`
-  d. `$ flask init-db` (creates the sqlite database on disk)
+    * `$ pip install -r requirements.txt`
+    * I don't think you need to, but you may need to run `$ pip install -e .`
+    * `$ export FLASK_APP=api`
+    * `$ flask init-db` (creates the sqlite database on disk)
 
 ## Running the backend (linux)
 1. Complete installation steps.
 2. In project root:
-  a. `$ export FLASK_APP=api` if you haven't run before in this session
-  b. `$ flask run`
-  c. API should be running on localhost:5000, if the port is different you will need to update the `API_URL` constant in `/web/api/index.js` to reflect that.
+    * `$ export FLASK_APP=api` if you haven't run before in this session
+    * `$ flask run`
+    * API should be running on localhost:5000, if the port is different you will need to update the `API_URL` constant in `/web/api/index.js` to reflect that.
 
 ## Testing the backend (both)
 1. In project root:
-  a. `$ pytest`
+    * `$ pytest`
 
 ## Installation for frontend (linux + probably windows)
 1. Have node.js and npm installed.
 2. In the `/web` directory:
-  a. `$ npm install`
+    * `$ npm install`
 
 ## Running the frontend (linux + probably windows)
 1. Complete installation steps.
 2. In the `/web` directory:
-  a. `$ npm run serve` to serve locally
+    * `$ npm run serve` to serve locally
 
 # Stuff I would change
 1. Parse CSV into JSON async instead of at the time of upload, same with date stats which are calculated on-demand.
